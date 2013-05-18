@@ -7,15 +7,6 @@ import org.testng.annotations.Test;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MenuTest {
-    public static final String MENU_GLOWNE = "Menu główne";
-    public static final String WYDRUKI = "Wydruki";
-    public static final String INFORMACJE = "Informacje";
-    public static final String AKTYWNOSCI = "Aktywności";
-    public static final String SPRAWY = "Sprawy";
-    public static final String ADMINISTRACJA = "Administracja";
-    public static final String LISTA_OCZEKUJaCYCH = "Lista oczekujących";
-    public static final String MOJE = "Moje";
-    public static final String ZMIEN_HASLO = "Zmień hasło";
 
     private MenuItem root;
 
@@ -25,10 +16,10 @@ public class MenuTest {
         MenuItemFactory menuItemFactory = new MenuItemFactoryImpl();
 
         root = menuItemFactory.create("");
-        MenuItem menuGlowne = menuItemFactory.createWithSubs(MENU_GLOWNE, WYDRUKI, INFORMACJE);
-        MenuItem menuAktywnosci = menuItemFactory.createWithSubs(AKTYWNOSCI, LISTA_OCZEKUJaCYCH, MOJE);
-        MenuItem menuSprawy = menuItemFactory.createWithSubs(SPRAWY, LISTA_OCZEKUJaCYCH, MOJE);
-        MenuItem menuAdministracja = menuItemFactory.createWithSubs(ADMINISTRACJA, ZMIEN_HASLO);
+        MenuItem menuGlowne = menuItemFactory.createWithSubs(MenuConsts.MENU_GLOWNE, MenuConsts.WYDRUKI, MenuConsts.INFORMACJE);
+        MenuItem menuAktywnosci = menuItemFactory.createWithSubs(MenuConsts.AKTYWNOSCI, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
+        MenuItem menuSprawy = menuItemFactory.createWithSubs(MenuConsts.SPRAWY, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
+        MenuItem menuAdministracja = menuItemFactory.createWithSubs(MenuConsts.ADMINISTRACJA, MenuConsts.ZMIEN_HASLO);
 
         root.add(menuGlowne);
         root.add(menuAdministracja);
@@ -53,12 +44,12 @@ public class MenuTest {
      */
     public void shouldCreateMenu() {
         assertThat(root.getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(MENU_GLOWNE).getChildren().size()).isEqualTo(4);
-        assertThat(root.getChildByName(MENU_GLOWNE).getChildByName(WYDRUKI).getChildren()).isEmpty();
-        assertThat(root.getChildByName(MENU_GLOWNE).getChildByName(INFORMACJE).getChildren()).isEmpty();
-        assertThat(root.getChildByName(MENU_GLOWNE).getChildByName(AKTYWNOSCI).getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(MENU_GLOWNE).getChildByName(SPRAWY).getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(ADMINISTRACJA).getChildren().size()).isEqualTo(1);
+        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildren().size()).isEqualTo(4);
+        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.WYDRUKI).getChildren()).isEmpty();
+        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.INFORMACJE).getChildren()).isEmpty();
+        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.AKTYWNOSCI).getChildren().size()).isEqualTo(2);
+        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.SPRAWY).getChildren().size()).isEqualTo(2);
+        assertThat(root.getChildByName(MenuConsts.ADMINISTRACJA).getChildren().size()).isEqualTo(1);
     }
 
     @Test
