@@ -13,7 +13,7 @@ public class MenuConsts {
     public static final String AKTYWNOSCI = "Aktywności";
     public static final String SPRAWY = "Sprawy";
     public static final String ADMINISTRACJA = "Administracja";
-    public static final String LISTA_OCZEKUJaCYCH = "Lista oczekujących";
+    public static final String LISTA_OCZEKUJACYCH = "Lista oczekujących";
     public static final String MOJE = "Moje";
     public static final String ZMIEN_HASLO = "Zmień hasło";
 }

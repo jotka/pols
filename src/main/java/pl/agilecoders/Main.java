@@ -8,22 +8,43 @@ package pl.agilecoders;
  */
 public class Main {
     public static void main(String[] args) {
-        MenuItemFactory menuItemFactory = new MenuItemFactoryImpl();
+        MenuComponentFactory menuItemFactory = new MenuComponentFactoryImpl();
 
-        MenuItem root = menuItemFactory.create("");
-        MenuItem menuGlowne = menuItemFactory.createWithSubs(MenuConsts.MENU_GLOWNE, MenuConsts.WYDRUKI, MenuConsts.INFORMACJE);
-        MenuItem menuAktywnosci = menuItemFactory.createWithSubs(MenuConsts.AKTYWNOSCI, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
-        MenuItem menuSprawy = menuItemFactory.createWithSubs(MenuConsts.SPRAWY, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
-        MenuItem menuAdministracja = menuItemFactory.createWithSubs(MenuConsts.ADMINISTRACJA, MenuConsts.ZMIEN_HASLO);
+        MenuComposite root = menuItemFactory.createComposite("");
+
+        MenuComposite menuGlowne = menuItemFactory.createComposite(MenuConsts.MENU_GLOWNE);
+        MenuLeaf menuWydruki = menuItemFactory.createLeaf(MenuConsts.WYDRUKI);
+        MenuLeaf menuInformacje = menuItemFactory.createLeaf(MenuConsts.INFORMACJE);
+
+        MenuComposite menuAktywnosci = menuItemFactory.createComposite(MenuConsts.AKTYWNOSCI);
+        MenuLeaf menuListaOczekAktyw = menuItemFactory.createLeaf(MenuConsts.LISTA_OCZEKUJACYCH);
+        MenuLeaf menuMojeAktyw = menuItemFactory.createLeaf(MenuConsts.MOJE);
+
+        MenuComposite menuSprawy = menuItemFactory.createComposite(MenuConsts.SPRAWY);
+        MenuLeaf menuListaOczekSprawy = menuItemFactory.createLeaf(MenuConsts.LISTA_OCZEKUJACYCH);
+        MenuLeaf menuMojeSprawy = menuItemFactory.createLeaf(MenuConsts.MOJE);
+
+        MenuComposite menuAdministracja = menuItemFactory.createComposite(MenuConsts.ADMINISTRACJA);
+        MenuLeaf menuZmienHaslo = menuItemFactory.createLeaf(MenuConsts.ZMIEN_HASLO);
 
         root.add(menuGlowne);
         root.add(menuAdministracja);
 
+        menuGlowne.add(menuWydruki);
+        menuGlowne.add(menuInformacje);
         menuGlowne.add(menuAktywnosci);
         menuGlowne.add(menuSprawy);
 
+        menuSprawy.add(menuListaOczekSprawy);
+        menuSprawy.add(menuMojeSprawy);
 
-        MenuItemVisitor printer = new MenuItemVisitorImpl();
+        menuAktywnosci.add(menuListaOczekAktyw);
+        menuAktywnosci.add(menuMojeAktyw);
+
+        menuAdministracja.add(menuZmienHaslo);
+
+
+        MenuVisitor printer = new MenuVisitorImpl();
 
         root.accept(printer);
     }

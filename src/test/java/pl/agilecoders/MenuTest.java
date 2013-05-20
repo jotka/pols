@@ -8,53 +8,74 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class MenuTest {
 
-    private MenuItem root;
+    private MenuComposite root;
+    private MenuComposite menuGlowne;
+    private MenuComponent menuWydruki;
+    private MenuComponent menuInformacje;
+
+    private MenuComposite menuAktywnosci;
+    private MenuComponent menuListaOczekAktyw;
+    private MenuComponent menuMojeAktyw;
+
+    private MenuComposite menuSprawy;
+    private MenuComponent menuListaOczekSprawy;
+    private MenuComponent menuMojeSprawy;
+
+    private MenuComposite menuAdministracja;
+    private MenuComponent menuZmienHaslo;
+
 
 
     @BeforeMethod
     public void given() {
-        MenuItemFactory menuItemFactory = new MenuItemFactoryImpl();
+        MenuComponentFactory menuItemFactory = new MenuComponentFactoryImpl();
 
-        root = menuItemFactory.create("");
-        MenuItem menuGlowne = menuItemFactory.createWithSubs(MenuConsts.MENU_GLOWNE, MenuConsts.WYDRUKI, MenuConsts.INFORMACJE);
-        MenuItem menuAktywnosci = menuItemFactory.createWithSubs(MenuConsts.AKTYWNOSCI, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
-        MenuItem menuSprawy = menuItemFactory.createWithSubs(MenuConsts.SPRAWY, MenuConsts.LISTA_OCZEKUJaCYCH, MenuConsts.MOJE);
-        MenuItem menuAdministracja = menuItemFactory.createWithSubs(MenuConsts.ADMINISTRACJA, MenuConsts.ZMIEN_HASLO);
+        root = menuItemFactory.createComposite("");
+
+        menuGlowne = menuItemFactory.createComposite(MenuConsts.MENU_GLOWNE);
+        menuWydruki = menuItemFactory.createLeaf(MenuConsts.WYDRUKI);
+        menuInformacje = menuItemFactory.createLeaf(MenuConsts.INFORMACJE);
+
+        menuAktywnosci = menuItemFactory.createComposite(MenuConsts.AKTYWNOSCI);
+        menuListaOczekAktyw = menuItemFactory.createLeaf(MenuConsts.LISTA_OCZEKUJACYCH);
+        menuMojeAktyw = menuItemFactory.createLeaf(MenuConsts.MOJE);
+
+        menuSprawy = menuItemFactory.createComposite(MenuConsts.SPRAWY);
+        menuListaOczekSprawy = menuItemFactory.createLeaf(MenuConsts.LISTA_OCZEKUJACYCH);
+        menuMojeSprawy = menuItemFactory.createLeaf(MenuConsts.MOJE);
+
+        menuAdministracja = menuItemFactory.createComposite(MenuConsts.ADMINISTRACJA);
+        menuZmienHaslo = menuItemFactory.createLeaf(MenuConsts.ZMIEN_HASLO);
 
         root.add(menuGlowne);
         root.add(menuAdministracja);
 
+        menuGlowne.add(menuWydruki);
+        menuGlowne.add(menuInformacje);
         menuGlowne.add(menuAktywnosci);
         menuGlowne.add(menuSprawy);
+
+        menuSprawy.add(menuListaOczekSprawy);
+        menuSprawy.add(menuMojeSprawy);
+
+        menuAktywnosci.add(menuListaOczekAktyw);
+        menuAktywnosci.add(menuMojeAktyw);
+
+        menuAdministracja.add(menuZmienHaslo);
     }
 
     @Test
-    /**
-     * Menu Główne
-        - Wydruki
-        - Informacje
-        + Aktywności
-            - Lista oczekujących
-            - Moje
-        + Sprawy
-            - Lista oczekujących
-            - Moje
-     + Administracja
-        - Zmień hasło
-     */
     public void shouldCreateMenu() {
         assertThat(root.getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildren().size()).isEqualTo(4);
-        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.WYDRUKI).getChildren()).isEmpty();
-        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.INFORMACJE).getChildren()).isEmpty();
-        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.AKTYWNOSCI).getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(MenuConsts.MENU_GLOWNE).getChildByName(MenuConsts.SPRAWY).getChildren().size()).isEqualTo(2);
-        assertThat(root.getChildByName(MenuConsts.ADMINISTRACJA).getChildren().size()).isEqualTo(1);
+        assertThat(menuGlowne.getChildren().size()).isEqualTo(4);
+        assertThat(menuAktywnosci.getChildren().size()).isEqualTo(2);
+        assertThat(menuSprawy.getChildren().size()).isEqualTo(2);
+        assertThat(menuAdministracja.getChildren().size()).isEqualTo(1);
     }
 
     @Test
     public void shouldPrintMenu() {
-        MenuItemVisitor printer = new MenuItemVisitorImpl();
+        MenuVisitor printer = new MenuVisitorImpl();
 
         //when
         root.accept(printer);
